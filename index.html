@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Trivia de Reflexiones de la Vida</title>
+  <title>Trivial Adrián</title>
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #e6f0ff;
       color: #003366;
       margin: 0;
@@ -21,14 +21,19 @@
       padding: 30px;
       border-radius: 20px;
       box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+      text-align: center;
     }
     h1 {
-      text-align: center;
       color: #0059b3;
     }
     .question {
       font-size: 1.2em;
       margin-bottom: 20px;
+    }
+    .category {
+      font-style: italic;
+      margin-bottom: 15px;
+      color: #336699;
     }
     .answers button {
       display: block;
@@ -46,36 +51,44 @@
       background-color: #99c2ff;
     }
     .result {
-      margin-top: 20px;
+      margin-top: 15px;
       font-weight: bold;
       font-size: 1.1em;
       color: #003366;
     }
-    #nextBtn {
+    #next-btn {
       margin-top: 20px;
       padding: 10px 20px;
-      font-size: 1em;
       background-color: #0059b3;
-      color: white;
       border: none;
       border-radius: 10px;
+      color: white;
+      font-size: 1em;
       cursor: pointer;
       display: none;
     }
-    #nextBtn:hover {
-      background-color: #004080;
+    #next-btn:hover {
+      background-color: #003366;
+    }
+    .score {
+      margin-top: 25px;
+      font-size: 1.2em;
+      font-weight: bold;
+      color: #004080;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Trivia de la Vida</h1>
+    <h1>Trivial Adrián</h1>
+    <div class="category" id="category"></div>
     <div class="question" id="question"></div>
     <div class="answers" id="answers"></div>
     <div class="result" id="result"></div>
-    <button id="nextBtn">Siguiente</button>
+    <button id="next-btn">Siguiente pregunta</button>
+    <div class="score" id="score"></div>
   </div>
-  
+
   <script>
     const questions = [
       {
@@ -86,7 +99,8 @@
           "Solo hacer planes para el futuro",
           "Evitar todo tipo de preocupaciones"
         ],
-        answer: 1
+        answer: 1,
+        category: "Presente"
       },
       {
         question: "¿Qué valor se encuentra al enfrentar dificultades?",
@@ -96,7 +110,8 @@
           "Fortalecimiento del carácter y crecimiento",
           "Demostrar superioridad ante otros"
         ],
-        answer: 2
+        answer: 2,
+        category: "Dificultades"
       },
       {
         question: "¿Qué significa la autenticidad personal?",
@@ -106,7 +121,8 @@
           "Ser uno mismo sin máscaras",
           "Imitar a quien admiras"
         ],
-        answer: 2
+        answer: 2,
+        category: "Autenticidad"
       },
       {
         question: "¿Qué enseña la soledad?",
@@ -116,8 +132,10 @@
           "A conectar contigo mismo",
           "Que el mundo es injusto"
         ],
-        answer: 2
+        answer: 2,
+        category: "Soledad"
       },
+      // Puedes seguir agregando preguntas aquí, siempre con su categoría
       {
         question: "¿Cuál es el poder del perdón?",
         options: [
@@ -126,7 +144,8 @@
           "Ignorar los errores",
           "Repetir los mismos conflictos"
         ],
-        answer: 1
+        answer: 1,
+        category: "Perdón"
       },
       {
         question: "¿Qué aporta el silencio en la vida?",
@@ -136,7 +155,8 @@
           "Fomenta la introspección y claridad",
           "Te hace parecer débil"
         ],
-        answer: 2
+        answer: 2,
+        category: "Silencio"
       },
       {
         question: "¿Qué refleja la gratitud diaria?",
@@ -146,7 +166,8 @@
           "Reconocimiento del valor de la vida",
           "Falsa felicidad"
         ],
-        answer: 2
+        answer: 2,
+        category: "Gratitud"
       },
       {
         question: "¿Por qué es importante el propósito de vida?",
@@ -156,140 +177,46 @@
           "Para guiar tus acciones y decisiones",
           "Para impresionar a otros"
         ],
-        answer: 2
-      },
-      {
-        question: "¿Qué enseña el fracaso?",
-        options: [
-          "Que no vales",
-          "Que debes rendirte",
-          "Lecciones para mejorar",
-          "A evitar nuevos retos"
-        ],
-        answer: 2
-      },
-      {
-        question: "¿Qué implica aceptar la impermanencia?",
-        options: [
-          "No aferrarse a nada y valorar el presente",
-          "Temer al cambio",
-          "Luchar por controlar todo",
-          "Evitar los vínculos"
-        ],
-        answer: 0
-      },
-      {
-        question: "¿Qué significa crecer espiritualmente?",
-        options: [
-          "Leer libros de autoayuda",
-          "Evitar relaciones tóxicas",
-          "Conocerse a sí mismo y actuar con conciencia",
-          "Alcanzar el éxito profesional"
-        ],
-        answer: 2
-      },
-      {
-        question: "¿Qué revela cómo reaccionamos ante la adversidad?",
-        options: [
-          "Nuestra suerte",
-          "Nuestra madurez emocional",
-          "Nuestro entorno",
-          "El poder de los demás sobre nosotros"
-        ],
-        answer: 1
-      },
-      {
-        question: "¿Qué papel juega la incertidumbre en la vida?",
-        options: [
-          "Es algo que debe evitarse a toda costa",
-          "Es un obstáculo para la felicidad",
-          "Es parte esencial del crecimiento y la libertad",
-          "Solo trae caos y ansiedad"
-        ],
-        answer: 2
-      },
-      {
-        question: "¿Qué valor tiene el sufrimiento consciente?",
-        options: [
-          "Ninguno, debe eliminarse siempre",
-          "Despierta compasión y profundidad",
-          "Demuestra superioridad emocional",
-          "Es señal de debilidad"
-        ],
-        answer: 1
-      },
-      {
-        question: "¿Qué implica tener una mente abierta?",
-        options: [
-          "Aceptar todas las ideas sin cuestionar",
-          "Tolerar el caos",
-          "Estar dispuesto a desaprender y aprender continuamente",
-          "Cambiar de opinión constantemente"
-        ],
-        answer: 2
-      },
-      {
-        question: "¿Cuál es el sentido de la autocompasión?",
-        options: [
-          "Evitar responsabilidades",
-          "Reforzar el ego",
-          "Ofrecerte comprensión sin juzgarte",
-          "Manipular a otros con tu dolor"
-        ],
-        answer: 2
-      },
-      {
-        question: "¿Qué nos enseña la muerte sobre la vida?",
-        options: [
-          "Que todo esfuerzo es inútil",
-          "Que debemos aprovechar cada momento",
-          "Que no vale la pena arriesgarse",
-          "Que debemos temer constantemente"
-        ],
-        answer: 1
-      },
-      {
-        question: "¿Por qué es importante la coherencia interna?",
-        options: [
-          "Para agradar a los demás",
-          "Para evitar conflictos externos",
-          "Para vivir con paz y autenticidad",
-          "Para no ser criticado"
-        ],
-        answer: 2
-      },
-      {
-        question: "¿Qué significa realmente el éxito personal?",
-        options: [
-          "Tener más que los demás",
-          "Lograr objetivos impuestos por otros",
-          "Vivir de acuerdo con tus valores",
-          "Evitar el fracaso a toda costa"
-        ],
-        answer: 2
-      },
-      {
-        question: "¿Qué se logra al dejar ir el control?",
-        options: [
-          "Fracaso y caos",
-          "Falta de metas",
-          "Paz y adaptabilidad",
-          "Perder el rumbo"
-        ],
-        answer: 2
+        answer: 2,
+        category: "Propósito"
       }
+      // ...más preguntas si quieres
     ];
 
+    // Función para seleccionar una pregunta aleatoria por categoría
+    function getRandomQuestionsByCategory(questions) {
+      const categories = {};
+      questions.forEach(q => {
+        if (!categories[q.category]) {
+          categories[q.category] = [];
+        }
+        categories[q.category].push(q);
+      });
+
+      const selectedQuestions = [];
+      for (const cat in categories) {
+        const arr = categories[cat];
+        const randomIndex = Math.floor(Math.random() * arr.length);
+        selectedQuestions.push(arr[randomIndex]);
+      }
+      return selectedQuestions;
+    }
+
+    const quizQuestions = getRandomQuestionsByCategory(questions);
     let current = 0;
-    let correctCount = 0;
+    let correct = 0;
+    let incorrect = 0;
 
     const questionEl = document.getElementById('question');
     const answersEl = document.getElementById('answers');
     const resultEl = document.getElementById('result');
-    const nextBtn = document.getElementById('nextBtn');
+    const nextBtn = document.getElementById('next-btn');
+    const categoryEl = document.getElementById('category');
+    const scoreEl = document.getElementById('score');
 
     function showQuestion() {
-      const q = questions[current];
+      const q = quizQuestions[current];
+      categoryEl.textContent = `Categoría: ${q.category}`;
       questionEl.textContent = q.question;
       answersEl.innerHTML = '';
       resultEl.textContent = '';
@@ -303,35 +230,43 @@
       });
     }
 
-    function checkAnswer(index) {
-      const q = questions[current];
-      const isCorrect = index === q.answer;
+    function checkAnswer(selectedIndex) {
+      const q = quizQuestions[current];
+      const isCorrect = selectedIndex === q.answer;
 
-      if (isCorrect) correctCount++;
+      if (isCorrect) {
+        correct++;
+        resultEl.textContent = "¡Correcto!";
+        resultEl.style.color = "green";
+      } else {
+        incorrect++;
+        resultEl.textContent = `Incorrecto. La respuesta correcta es: "${q.options[q.answer]}"`;
+        resultEl.style.color = "red";
+      }
 
-      resultEl.innerHTML = isCorrect 
-        ? "¡Correcto!" 
-        : `Incorrecto. La respuesta correcta es: <strong>${q.options[q.answer]}</strong>`;
+      // Deshabilitar botones para no permitir más respuestas
+      [...answersEl.children].forEach(btn => btn.disabled = true);
 
-      // Desactivar botones para evitar más clicks
-      Array.from(answersEl.children).forEach(btn => btn.disabled = true);
       nextBtn.style.display = 'inline-block';
     }
 
-    nextBtn.onclick = () => {
+    nextBtn.addEventListener('click', () => {
       current++;
-      if (current < questions.length) {
+      if (current < quizQuestions.length) {
         showQuestion();
       } else {
-        questionEl.textContent = "¡Trivia terminada!";
-        answersEl.innerHTML = '';
-        nextBtn.style.display = 'none';
-        resultEl.innerHTML = `
-          <p>Has acertado <strong>${correctCount}</strong> de <strong>${questions.length}</strong> preguntas.</p>
-          <p>¡Gracias por participar!</p>
-        `;
+        showFinalScore();
       }
-    };
+    });
+
+    function showFinalScore() {
+      categoryEl.textContent = '';
+      questionEl.textContent = '¡Juego terminado!';
+      answersEl.innerHTML = '';
+      resultEl.textContent = '';
+      nextBtn.style.display = 'none';
+      scoreEl.textContent = `Has acertado ${correct} preguntas y fallado ${incorrect}.`;
+    }
 
     showQuestion();
   </script>
